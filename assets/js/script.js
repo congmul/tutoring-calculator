@@ -9,6 +9,7 @@ function reset() {
     operator = undefined;
     firstNums = undefined;
     secondNums = undefined;
+    return;
 }
 
 function onclick(event) {
@@ -25,7 +26,6 @@ function onclick(event) {
 function determineBehavior(state, targetValue) {
     if(state === 'reset'){
         reset();
-        return;
     }else if(state === 'operator'){
         operator = targetValue;
             displayNumberEl.value = '';
@@ -41,37 +41,70 @@ function determineBehavior(state, targetValue) {
         secondNums ? secondNums += targetValue : secondNums = targetValue;
         displayNumberEl.value = secondNums;
     }else if(state === 'result' && operator && firstNums && secondNums){
-        let result = calculator(parseInt(firstNums), operator, parseInt(secondNums))
+        let result = calculator(firstNums, operator, secondNums)
         displayNumberEl.value = result;
         operator = undefined;
         firstNums = undefined;
         secondNums = undefined;
     }
-
 }
 
 function calculator(firstNums, operator, secondNums){
     let result;
     switch(operator){
         case '+':
-            result = firstNums + secondNums;
+            result = plusMinusDivideOp(firstNums, operator, secondNums);
         break;
         case '-':
-            result = firstNums - secondNums;
+            result = plusMinusDivideOp(firstNums, operator, secondNums);
         break;
         case 'x':
-            result = firstNums * secondNums;
+            result = multiplyOp(firstNums, secondNums);
         break;
         case '/':
-            result = firstNums / secondNums;
+            result = plusMinusDivideOp(firstNums, operator, secondNums);
         break;
         case '%':
             result = firstNums % secondNums;
         break;
     }
-    return result;
+    return !isFloat(result) ? result : displayFloat(result);
 }
 
+function isFloat(n){
+    return Number(n) === n && n % 1 !== 0;
+}
+
+function plusMinusDivideOp(num01, op, num02){
+    let amountNum01 = num01.toString().split('.')[1]?.length || 0;
+    let amountNum02 = num02.toString().split('.')[1]?.length || 0;
+    const amountOfDecimalPoint = Math.max(amountNum01, amountNum02);
+    const firstIntNum = parseFloat(num01) * Math.pow(10, amountOfDecimalPoint);
+    const secondIntNum = parseFloat(num02) * Math.pow(10, amountOfDecimalPoint);
+    if(op === '+'){
+        return (firstIntNum + secondIntNum) / Math.pow(10, amountOfDecimalPoint);
+    }else if(op === '-'){
+        return (firstIntNum - secondIntNum) / Math.pow(10, amountOfDecimalPoint);
+    }else if(op === '/'){
+        return (firstIntNum / secondIntNum);
+    }
+}
+function multiplyOp(num01, num02){
+    let amountNum01 = num01.toString().split('.')[1]?.length || 0;
+    let amountNum02 = num02.toString().split('.')[1]?.length || 0;
+    const amountOfDecimalPoint = amountNum01 + amountNum02;
+    const firstIntNum = parseFloat(num01) * Math.pow(10, amountNum01);
+    const secondIntNum = parseFloat(num02) * Math.pow(10, amountNum02);
+
+    return (firstIntNum * secondIntNum) / Math.pow(10, amountOfDecimalPoint);
+}
+function displayFloat(n){
+    let numberArr = n.toString().split('.');
+    if(numberArr[1]?.length > 15){
+        return n.toFixed(14);
+    }
+    return n;
+}
 
 for (let i = 0; i < btns.length; i++){
     btns[i].onclick = onclick;
