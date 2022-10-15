@@ -1,5 +1,12 @@
 const btns = document.getElementsByClassName('customized-btn');
 const displayNumberEl = document.querySelector('input')
+const OPERATORVALUE = {
+    plus: '+',
+    minus: '-',
+    times: 'x',
+    division: '/',
+    mode: '%'
+}
 let operator = undefined;
 let firstNums = undefined;
 let secondNums = undefined;
@@ -79,27 +86,23 @@ function determineBehavior(state, targetValue) {
 function calculator(firstNums, operator, secondNums){
     let result;
     switch(operator){
-        case '+':
+        case OPERATORVALUE.plus:
             result = plusMinusDivideOp(firstNums, operator, secondNums);
         break;
-        case '-':
+        case OPERATORVALUE.minus:
             result = plusMinusDivideOp(firstNums, operator, secondNums);
         break;
-        case 'x':
+        case OPERATORVALUE.times:
             result = multiplyOp(firstNums, secondNums);
         break;
-        case '/':
+        case OPERATORVALUE.division:
             result = plusMinusDivideOp(firstNums, operator, secondNums);
         break;
-        case '%':
+        case OPERATORVALUE.mode:
             result = firstNums % secondNums;
         break;
     }
     return !isFloat(result) ? result : displayFloat(result);
-}
-
-function isFloat(n){
-    return Number(n) === n && n % 1 !== 0;
 }
 
 function plusMinusDivideOp(num01, op, num02){
@@ -108,14 +111,15 @@ function plusMinusDivideOp(num01, op, num02){
     const amountOfDecimalPoint = Math.max(amountNum01, amountNum02);
     const firstIntNum = parseFloat(num01) * Math.pow(10, amountOfDecimalPoint);
     const secondIntNum = parseFloat(num02) * Math.pow(10, amountOfDecimalPoint);
-    if(op === '+'){
+    if(op === OPERATORVALUE.plus){
         return (firstIntNum + secondIntNum) / Math.pow(10, amountOfDecimalPoint);
-    }else if(op === '-'){
+    }else if(op === OPERATORVALUE.minus){
         return (firstIntNum - secondIntNum) / Math.pow(10, amountOfDecimalPoint);
-    }else if(op === '/'){
+    }else if(op === OPERATORVALUE.division){
         return (firstIntNum / secondIntNum);
     }
 }
+
 function multiplyOp(num01, num02){
     let amountNum01 = num01.toString().split('.')[1]?.length || 0;
     let amountNum02 = num02.toString().split('.')[1]?.length || 0;
@@ -125,6 +129,11 @@ function multiplyOp(num01, num02){
 
     return (firstIntNum * secondIntNum) / Math.pow(10, amountOfDecimalPoint);
 }
+
+function isFloat(n){
+    return Number(n) === n && n % 1 !== 0;
+}
+
 function displayFloat(n){
     let numberArr = n.toString().split('.');
     if(numberArr[1]?.length > 15){
