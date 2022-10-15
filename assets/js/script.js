@@ -14,6 +14,11 @@ function reset() {
 
 function onclick(event) {
     const state = event.target.dataset.state;
+    if(state === 'minus-plus') {
+        alert('In development, does not work at the moment');
+        return;
+    }
+    inputStringValidator()
     determineBehavior(state, event.target.textContent);
 
     let currentColor = event.target.style.background;
@@ -23,26 +28,48 @@ function onclick(event) {
     }, 100)
 }
 
+function inputStringValidator() {
+    if(displayNumberEl.value.length >= 7){
+        // small & medium fontsize
+        let percentage = 250 - (25 * (displayNumberEl.value.length - 6));
+        displayNumberEl.style.fontSize = `${percentage > 0 ? percentage : 100}%`;
+    }else{
+        // large fontsize
+        displayNumberEl.style.fontSize = '250%';
+    }
+}
+
 function determineBehavior(state, targetValue) {
     if(state === 'reset'){
         reset();
-    }else if(state === 'operator'){
+    }else if(state === 'operator' && firstNums != null){
         operator = targetValue;
             displayNumberEl.value = '';
         setTimeout(() => {
             displayNumberEl.value = firstNums;
         },100)
-    }else if(state === 'point'){
-        // firstNums ? firstNums += targetValue : firstNums = targetValue;
     }else if(state === 'number' && !operator){
         firstNums ? firstNums += targetValue : firstNums = targetValue;
-        displayNumberEl.value = firstNums;
+        let preFirstNums = displayNumberEl.value;
+        if(firstNums.length < 12){
+            displayNumberEl.value = firstNums;
+        }else{
+            displayNumberEl.value = preFirstNums;
+            firstNums = preFirstNums;
+        }
     }else if(state === 'number'){
         secondNums ? secondNums += targetValue : secondNums = targetValue;
-        displayNumberEl.value = secondNums;
+        let preSecondNums = displayNumberEl.value;
+        if(secondNums.length < 12){
+            displayNumberEl.value = secondNums;
+        }else{
+            displayNumberEl.value = preSecondNums;
+            secondNums = preSecondNums;
+        }
     }else if(state === 'result' && operator && firstNums && secondNums){
         let result = calculator(firstNums, operator, secondNums)
         displayNumberEl.value = result;
+        inputStringValidator();
         operator = undefined;
         firstNums = undefined;
         secondNums = undefined;
