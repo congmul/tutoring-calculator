@@ -1,9 +1,8 @@
-const regex = /^[0-9-+/x%=.]$/;
+const regex = /^[0-9-+/x%=.*]$/;
 let previousKeydown;
 document.addEventListener('keydown', function (event) {
-    if(event.key === 'Escape') reset();
     var key = event.key;
-    if(regex.test(key) || key === "Enter" || key === "Equal"){
+    if(regex.test(key) || key === "Enter" || key === "Equal" || key === "Escape"){
         let selectedClass = event.code;
         if(!(previousKeydown === 'Shift') && key === '='){
             selectedClass = "Enter"
@@ -11,6 +10,8 @@ document.addEventListener('keydown', function (event) {
             selectedClass = "Plus"
         }else if(previousKeydown === 'Shift' && key === '%'){
             selectedClass = "Mode"
+        }else if(previousKeydown === 'Shift' && key === '*'){
+            selectedClass = "KeyX"
         }
         keydownEvent(document.querySelector(`.${selectedClass}`))
     };
