@@ -27,17 +27,6 @@ function onclick(event) {
         event.target.style.background = currentColor;
     }, 100)
 }
-function keydownEvent(eventTarget){
-    const state = eventTarget.dataset.state;
-    inputStringValidator()
-    determineBehavior(state, eventTarget.textContent);
-
-    let currentColor = eventTarget.style.background;
-    eventTarget.style.background = 'rgb(210, 210, 210)';
-    setTimeout(() => {
-        eventTarget.style.background = currentColor;
-    }, 100)
-}
 
 function inputStringValidator() {
     if(displayNumberEl.value.length >= 7){
