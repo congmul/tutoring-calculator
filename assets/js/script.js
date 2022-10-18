@@ -1,5 +1,9 @@
+// Select all buttons from a calculator.
 const btns = document.getElementsByClassName('customized-btn');
+// Display number on the input element.
 const displayNumberEl = document.querySelector('input')
+// Use enums for switch or if statement
+// it can help a programmer to avoid their typo mistake
 const OPERATORVALUE = {
     plus: '+',
     minus: '-',
@@ -25,7 +29,9 @@ function onclick(event) {
         alert('In development, does not work at the moment');
         return;
     }
-    inputStringValidator()
+    // To handle size of the number to display properly
+    handleNumberSize()
+    // To decide if an operator is needed.
     determineBehavior(state, event.target.textContent);
 
     let currentColor = event.target.style.background;
@@ -35,7 +41,7 @@ function onclick(event) {
     }, 100)
 }
 
-function inputStringValidator() {
+function handleNumberSize() {
     if(displayNumberEl.value.length >= 7){
         // small & medium fontsize
         let percentage = 250 - (25 * (displayNumberEl.value.length - 6));
@@ -74,9 +80,10 @@ function determineBehavior(state, targetValue) {
             secondNums = preSecondNums;
         }
     }else if(state === 'result' && operator && firstNums && secondNums){
-        let result = calculator(firstNums, operator, secondNums)
+        // Actually calculating two numbers
+        let result = calculator(firstNums, operator, secondNums) 
         displayNumberEl.value = result;
-        inputStringValidator();
+        handleNumberSize();
         operator = undefined;
         firstNums = undefined;
         secondNums = undefined;
@@ -104,7 +111,9 @@ function calculator(firstNums, operator, secondNums){
     }
     return !isFloat(result) ? result : displayFloat(result);
 }
-
+// To avoid the wrong results because of decimals.
+// Convert decimals into integers and back to the original after calculating them.
+// This is for plus, minus, division.
 function plusMinusDivideOp(num01, op, num02){
     let amountNum01 = num01.toString().split('.')[1]?.length || 0;
     let amountNum02 = num02.toString().split('.')[1]?.length || 0;
@@ -119,7 +128,9 @@ function plusMinusDivideOp(num01, op, num02){
         return (firstIntNum / secondIntNum);
     }
 }
-
+// To avoid the wrong results because of decimals.
+// Convert decimals into integers and back to the original after calculating them.
+// This is for times.
 function multiplyOp(num01, num02){
     let amountNum01 = num01.toString().split('.')[1]?.length || 0;
     let amountNum02 = num02.toString().split('.')[1]?.length || 0;
@@ -130,10 +141,12 @@ function multiplyOp(num01, num02){
     return (firstIntNum * secondIntNum) / Math.pow(10, amountOfDecimalPoint);
 }
 
+// Check if n is float or not.
 function isFloat(n){
     return Number(n) === n && n % 1 !== 0;
 }
-
+// display limited lenth of number
+// maximum: 14 lengths after the point.
 function displayFloat(n){
     let numberArr = n.toString().split('.');
     if(numberArr[1]?.length > 15){
@@ -142,6 +155,7 @@ function displayFloat(n){
     return n;
 }
 
+// Adding onclick function into each buttons.
 for (let i = 0; i < btns.length; i++){
     btns[i].onclick = onclick;
 }
