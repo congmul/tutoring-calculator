@@ -3,7 +3,7 @@ let previousKeydown;
 
 function keydownEvent(eventTarget){
     const state = eventTarget.dataset.state;
-    inputStringValidator()
+    handleNumberSize()
     determineBehavior(state, eventTarget.textContent);
 
     let currentColor = eventTarget.style.background;
@@ -13,7 +13,7 @@ function keydownEvent(eventTarget){
     }, 100)
 }
 
-document.addEventListener('keydown', function (event) {
+window.document.addEventListener('keydown', function (event) {
     var key = event.key;
     if(regex.test(key) || key === "Enter" || key === "Equal" || key === "Escape"){
         let selectedClass = event.code;
