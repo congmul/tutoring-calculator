@@ -10,8 +10,21 @@
     --primary-operator-color: rgb(255, 153, 0);
     --primary-number-color: rgb(130, 130, 130);
 }
+body {
+    margin: 0px;
+    padding: 0px;
+}
 
-body{
+header{
+    width: 100%;
+    height: 50px;
+    font-size: 2rem;
+    background-color: antiquewhite;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+main{
     display: flex;
     justify-content: center;
     padding-top: 24px;
