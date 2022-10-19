@@ -29,16 +29,18 @@ function onclick(event) {
         alert('In development, does not work at the moment');
         return;
     }
-    // To handle size of the number to display properly
-    handleNumberSize()
-    // To decide if an operator is needed.
-    determineBehavior(state, event.target.textContent);
-
-    let currentColor = event.target.style.background;
-    event.target.style.background = 'rgb(210, 210, 210)';
-    setTimeout(() => {
-        event.target.style.background = currentColor;
-    }, 100)
+    if(event.target.matches('.customized-btn')){
+        // To handle size of the number to display properly
+        handleNumberSize()
+        // To decide if an operator is needed.
+        determineBehavior(state, event.target.textContent);
+    
+        let currentColor = event.target.style.background;
+        event.target.style.background = 'rgb(210, 210, 210)';
+        setTimeout(() => {
+            event.target.style.background = currentColor;
+        }, 100)
+    }
 }
 
 function handleNumberSize() {
