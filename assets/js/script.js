@@ -156,6 +156,4 @@ function displayFloat(n){
 }
 
 // Adding onclick function into each buttons.
-for (let i = 0; i < btns.length; i++){
-    btns[i].onclick = onclick;
-}
+window.document.querySelector('.calculator-wrapper').onclick = onclick;
